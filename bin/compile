@@ -88,19 +88,28 @@ export LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LIBRARY_PAT
 export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:/app/.heroku/python/lib/pkg-config:$PKG_CONFIG_PATH
 
+echo "getting env vars"
 
-for x in `heroku config`; do
-  if [[ $x == HUBOT* ]]; then
-    name=$x
-  elif [ $x != '=>' ]; then
-    value=$x
-    export $name=$value
-  fi
-done
+ENVS=$(curl -n https://api.heroku.com/apps/vulcans-wg3r/config-vars   -H "Accept: application/vnd.heroku+json; version=3")
 
-echo
-echo "Heroku config exported to environment:"
-echo
+#Load Environmental Variables
+export SOCIAL_AUTH_TWITTER_SECRET=ENVS['SOCIAL_AUTH_TWITTER_SECRET']
+echo "$SOCIAL_AUTH_TWITTER_SECRET"
+export SOCIAL_AUTH_FACEBOOK_KEY=ENVS['SOCIAL_AUTH_FACEBOOK_KEY']
+echo "$SOCIAL_AUTH_FACEBOOK_KEY"
+export SOCIAL_AUTH_FACEBOOK_SECRET=ENVS['SOCIAL_AUTH_FACEBOOK_SECRET']
+echo "$SOCIAL_AUTH_FACEBOOK_SECRET"
+export SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=ENVS['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+echo "$SOCIAL_AUTH_GOOGLE_OAUTH2_KEY"
+export SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=ENVS['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
+echo "$SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"
+export SOCIAL_AUTH_TWITTER_KEY=ENVS['SOCIAL_AUTH_TWITTER_KEY']
+echo "$SOCIAL_AUTH_TWITTER_KEY"
+export SOCIAL_AUTH_TWITTER_SECRET=ENVS['SOCIAL_AUTH_TWITTER_SECRET']
+echo "$SOCIAL_AUTH_TWITTER_SECRET"
+
+echo "env vars set!"
+
 
 # Switch to the repo's context.
 cd "$BUILD_DIR"
