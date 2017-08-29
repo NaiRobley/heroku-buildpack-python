@@ -88,6 +88,20 @@ export LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LIBRARY_PAT
 export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:/app/.heroku/python/lib/pkg-config:$PKG_CONFIG_PATH
 
+
+for x in `heroku config`; do
+  if [[ $x == HUBOT* ]]; then
+    name=$x
+  elif [ $x != '=>' ]; then
+    value=$x
+    export $name=$value
+  fi
+done
+
+echo
+echo "Heroku config exported to environment:"
+echo
+
 # Switch to the repo's context.
 cd "$BUILD_DIR"
 
